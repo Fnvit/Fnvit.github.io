@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{public/layout}"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta th:name="${_csrf.parameterName}" th:content="${_csrf.token}">
+    <title>KOREA HOTEL | 메인</title>
+
+<!--    <link rel="stylesheet" th:href="@{/css/public/public.css}">-->
+<!--    <link rel="stylesheet" th:href="@{/css/public/header.css}">-->
+<!--    <link rel="stylesheet" th:href="@{/css/public/footer.css}">-->
+    <link rel="stylesheet" href="../static/css/main.css" th:href="@{/css/main.css}">
+
+    <script src="https://kit.fontawesome.com/d19fdaba43.js" crossorigin="anonymous"></script>
+    <script src="../static/js/wishlist.js" th:src="@{/js/wishlist.js}" defer></script>
+</head>
+<body>
+    <main layout:fragment="main">
+        <section class="location-section">
+            <h1>어디로 떠나고 싶으세요?</h1>
+            <div>
+                <label class="location-find">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <input type="text" placeholder="위치를 입력하세요">
+                </label>
+                <label class="location-date">
+                    <i class="fa-regular fa-calendar"></i>
+                    <span>
+                        <span>체크인</span>
+                        <input type="date">
+                    </span>
+                </label>
+                <label class="location-date">
+                    <i class="fa-regular fa-calendar"></i>
+                    <span>
+                        <span>체크아웃</span>
+                        <input type="date">
+                    </span>
+                </label>
+                <button>검색</button>
+            </div>
+        </section>
+    
+    
+        <div class="product-container">
+            <a th:href="@{|/room/${room.no}|}" class="product" th:each="room: ${rooms}">
+                <!-- 이미지가 표시되는 곳   -->
+                <section class="product-img-container">
+                    <div class="product-img" th:style="|background-image: url('${room.images[0].imageURL}')|"></div>
+                    <button th:if="${room.isWished}" type="button" th:onclick="|remove_wishlist(${room.no}, this, event)|">
+                        <i class="fa-solid fa-heart"></i>
+                    </button>
+                    <button th:unless="${room.isWished}" type="button" th:onclick="|add_wishlist(${room.no}, this, event)|">
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
+                </section>
+                <!--  상품 설명  -->
+                <section class="product-info-section">
+                    <div class="addr">
+                        <span th:text="${room.title}">한국 용산구</span>
+                        <span><i class="fa-solid fa-star"></i>4.89</span>
+                    </div>
+                    <div class="view" th:text="${room.subtitle}">
+                        공원 및 도심 전망
+                    </div>
+    
+                    <div class="date">5월 27일 ~ 6월 1일</div>
+                    <div class="price">
+                        <span th:text="${room.price}">&#8361;139,224</span>
+                        <span>/박</span>
+                    </div>
+                </section>
+            </a>
+        </div>
+    </main>
+</body>
+</html>
